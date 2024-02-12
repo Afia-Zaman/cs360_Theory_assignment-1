@@ -1,0 +1,128 @@
+// This program design is to calculate complex number. Complex values are denoted by a
+// parenthesized pair of values separated by a comma representing the real and imaginary
+// part of the variable. For example, (1, 2) indicates that the real part is 1 and the imaginary
+// part is 2. A complex number can also be represented by the magnitude and angle format
+// like this (1 > 45) indicating a complex value with a magnitude of 1 and an angle of 45 degrees
+// You will need to implement the Complex class, and provide operations for the plus,
+// minus, multiply, and divide calculations. You will NOT need an exponentiation operator
+// for this assignment. The Complex class will need a constructor with no arguments
+// (default constructor), one with two arguments with initial values of both the real and
+// imaginary part, and a third constructor that builds a complex number from a const
+// string&, such as Complex("123, 456"). You will likely need the length() and empty()
+// methods that give the length of a string and a Boolean true value if the string is empty.
+// You will also need a member function to calculate the magnitude of the complex value,
+// the angle of the value, and the complex conjugate of the value. Finally, you will create a
+// Print() method in your Complex class to print the value of the complex number.
+
+
+Answer:
+#include <iostream>
+#include <cmath>
+#include <sstream>
+
+class Complex {
+private:
+    double real;
+    double imaginary;
+
+public:
+    // Constructors
+    Complex() : real(0.0), imaginary(0.0) {}
+    Complex(double real, double imaginary) : real(real), imaginary(imaginary) {}
+    Complex(const std::string& complexStr);
+
+    // Arithmetic operations
+    Complex operator+(const Complex& other) const;
+    Complex operator-(const Complex& other) const;
+    Complex operator*(const Complex& other) const;
+    Complex operator/(const Complex& other) const;
+
+    // Member functions
+    double getMagnitude() const;
+    double getAngle() const;
+    Complex getConjugate() const;
+
+    // Print method
+    void Print() const;
+};
+
+// Implementation of the constructor from a string
+Complex::Complex(const std::string& complexStr) {
+    // Assuming the input string is in the format "real, imaginary"
+    std::stringstream ss(complexStr);
+    char comma;
+    ss >> real >> comma >> imaginary;
+}
+
+// Implementation of arithmetic operations
+Complex Complex::operator+(const Complex& other) const {
+    return Complex(real + other.real, imaginary + other.imaginary);
+}
+
+Complex Complex::operator-(const Complex& other) const {
+    return Complex(real - other.real, imaginary - other.imaginary);
+}
+
+Complex Complex::operator*(const Complex& other) const {
+    return Complex(real * other.real - imaginary * other.imaginary,
+                   real * other.imaginary + imaginary * other.real);
+}
+
+Complex Complex::operator/(const Complex& other) const {
+    double denominator = other.real * other.real + other.imaginary * other.imaginary;
+    return Complex((real * other.real + imaginary * other.imaginary) / denominator,
+                   (imaginary * other.real - real * other.imaginary) / denominator);
+}
+
+// Implementation of member functions
+double Complex::getMagnitude() const {
+    return sqrt(real * real + imaginary * imaginary);
+}
+
+double Complex::getAngle() const {
+    return atan2(imaginary, real);  // Result in radians
+}
+
+Complex Complex::getConjugate() const {
+    return Complex(real, -imaginary);
+}
+
+// Implementation of the Print method
+void Complex::Print() const {
+    std::cout << "(" << real << ", " << imaginary << ")\n";
+}
+
+int main() {
+    // Example usage
+    Complex a(1.0, 2.0);
+    Complex b("3, 4");
+
+    Complex sum = a + b;
+    Complex difference = a - b;
+    Complex product = a * b;
+    Complex quotient = a / b;
+
+    std::cout << "Sum: ";
+    sum.Print();
+
+    std::cout << "Difference: ";
+    difference.Print();
+
+    std::cout << "Product: ";
+    product.Print();
+
+    std::cout << "Quotient: ";
+    quotient.Print();
+
+    std::cout << "Magnitude of a: " << a.getMagnitude() << "\n";
+    std::cout << "Angle of a: " << a.getAngle() << " radians\n";
+    std::cout << "Conjugate of a: ";
+    a.getConjugate().Print();
+
+    return 0;
+}
+
+// Output - Quotient: (0.44, 0.08)
+// Magnitude of a: 2.23607
+// Angle of a: 1.10715 radians
+// Conjugate of a: (1, -2)
