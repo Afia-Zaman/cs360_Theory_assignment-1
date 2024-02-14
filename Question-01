@@ -122,7 +122,11 @@ int main() {
     return 0;
 }
 
-// Output - Quotient: (0.44, 0.08)
+// Output -
+// Sum: (4, 6)
+// Difference: (-2, -2)
+// Product: (-5, 10)
+// Quotient: (0.44, 0.08)
 // Magnitude of a: 2.23607
 // Angle of a: 1.10715 radians
 // Conjugate of a: (1, -2)
